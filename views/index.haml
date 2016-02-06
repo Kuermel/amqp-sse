@@ -3,6 +3,14 @@
   %head
     %script{src: '//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js', type: 'text/javascript'}
   %body
+    %h2 Welcome to our site!
+    %li
+      %label{:for => "name"} Name:
+      %input{:type => "text", :name => "name", :class => "text", :id =>"uniqueID"}
+    %li
+      %label{:for => "mail"} email:
+      %input{:type => "text", :name => "mail", :class => "text"}
+    
     %input#publish{type: 'button', value: 'Publish'}
     %ul#messages
     :javascript
@@ -11,6 +19,7 @@
         $('#messages').append("<li>" + e.data + "</li>") 
       }
       $("#publish").click(function () {
-        $.post("/publish")
+      var nameValue = document.getElementById("uniqueID").value;
+        $.post("/publish", {name: nameValue})
       })
 

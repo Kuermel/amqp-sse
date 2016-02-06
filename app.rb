@@ -20,7 +20,9 @@ end
 
 post '/publish' do
   # publish a message to a fanout exchange
-  PUB_CHAN.fanout("f1").publish "Hello, world 2!"
+  name = params[:name]
+  mail = params[:mail]
+  PUB_CHAN.fanout("f1").publish "Hello, world  #{name}"
   204
 end
 
