@@ -7,7 +7,8 @@ configure do
   disable :logging
   EM.next_tick do
     # Connect to CloudAMQP and set the default connection
-    url = ENV['CLOUDAMQP_URL'] || "amqp://guest:guest@localhost"
+    url = 'amqp://wcjncudr:ONEd3KMBhCvGF3ng3Yul4vj5M__6GsKI@chicken.rmq.cloudamqp.com/wcjncudr' || "amqp://guest:guest@localhost"
+    #url = ENV['CLOUDAMQP_URL'] || "amqp://guest:guest@localhost"
     AMQP.connection = AMQP.connect url
     PUB_CHAN = AMQP::Channel.new
   end
