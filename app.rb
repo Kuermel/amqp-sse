@@ -20,18 +20,19 @@ end
 
 post '/publish' do
   # publish a message to a fanout exchange
-  name = params[:name]
-  mail = params[:mail]
-  PUB_CHAN.fanout("f1").publish "Hello, world  #{name}"
+  message = params[:message]
+  channel = params[:channel]
+  PUB_CHAN.fanout("#{channel}", auto_delete: true).publish "Channel:#{channel} Message: #{message} "
   204
 end
 
 get '/stream', provides: 'text/event-stream' do
+  channel2 = params['channel2']
   stream :keep_open do |out|
     AMQP::Channel.new do |channel|
-      channel.queue('', exclusive: true) do |queue|
+      channel.queue('', exclusive: true, auto_delete: true) do |queue|
         # create a queue and bind it to the fanout exchange
-        queue.bind(channel.fanout("f1")).subscribe do |payload|
+        queue.bind(channel.fanout("#{channel2}", auto_delete: true)).subscribe do |payload|
           out << "data: #{payload}\n\n"
         end
       end
@@ -47,3 +48,4 @@ get '/stream', provides: 'text/event-stream' do
     end
   end
 end
+
